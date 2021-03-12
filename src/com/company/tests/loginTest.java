@@ -1,110 +1,97 @@
 package com.company.tests;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class loginTest {
-    WebDriver driver;
+import java.util.jar.JarOutputStream;
+
+public class loginTest extends TestBase {
+
     @BeforeMethod
     public void initTests() throws InterruptedException {
-        driver = new ChromeDriver();
-        driver.get("https://trello.com/");
-        driver.manage().window().maximize();
-        Thread.sleep(2000);
-    }
-    @Test
-    public void applicationTest(){
-//
+        // ----- Press login button -----
+        WebElement loginIcon = driver.findElement(By.xpath
+                ("//a[contains(text(),'Log in')]"));
+        loginIcon.click();
+//        Thread.sleep(7000);
+        waitUntilElementIsClickable(By.id("login"), 10);
     }
 
     @Test
     public void loginNegativeLoginIncorrect() throws InterruptedException {
-        loginButtonMainScreen();
+        //----- Выявляем поля для Логина -----
         WebElement loginField = driver.findElement(By.id("user"));
         fillField(loginField, "123");
-        Thread.sleep(1500);
+        //----- Поле для Пароля -----
         WebElement passwordField = driver.findElement(By.id("password"));
         fillField(passwordField, "123");
-        Thread.sleep(1500);
+        //----- Ожидание, пока кнопка Логин будет кликабельной -----
+        waitUntilElementIsClickable(By.
+                cssSelector("#error >.error-message"), 10);
+        driver.findElement(By.id("login")).click();
+        //----- Ожидание, пока появится окно ошибки -----
+        waitUntilElementIsVisible(By.
+                cssSelector("#error >.error-message"), 10);
 
-        loginButtonTrelloScreen();
+        // --------- Print error message ----------
+        WebElement errorMessage = driver.findElement(By.cssSelector("#error >.error-message"));
+        System.out.println("Error-message: " + errorMessage.getText());
 
-        WebElement errorMessage = driver.findElement(By.id("error"));
-        System.out.println("Error message: " + errorMessage.getText());
-
+        Assert.assertTrue(errorMessage.getText().contains("There isn't an account"),
+                "Error message doesn't exist");
     }
 
     @Test
-    public void loginNegative_incorrectPassword() throws InterruptedException {
-        loginButtonMainScreen();
-
+    public void loginPositive() throws InterruptedException {
+        //---- Fill in login-field and press "login with Attlassian"----
         WebElement loginField = driver.findElement(By.id("user"));
-        fillField(loginField, "dan.marley710@gmail.com");
-        Thread.sleep(1500);
+        fillField(loginField,"dan.marley710@gmail.com");
+        //Thread.sleep(2000);
+        waitUntilElementIsClickable(By.xpath("//input[@value='Log in with Atlassian"), 7);
+        driver.findElement(By.id("login")).click();
+        //Thread.sleep(2000);
+        waitUntilElementIsClickable(By.id("password"), 7);
 
-        loginButtonTrelloScreen();
+        //----- Fill in password field and press login-submit button-----------
+        driver.findElement(By.id("password")).click();
+        driver.findElement(By.id("password")).sendKeys("dan0524003966");
 
-        WebElement passwordField = driver.findElement(By.id("password"));
-        fillField(passwordField, "dan");
-        Thread.sleep(1500);
+        //Thread.sleep(2000);
+        waitUntilElementIsClickable(By.id("login-submit"), 7);
+        driver.findElement(By.id("login-submit")).click();
 
-        loginSubmitButton();
+        //------Wait the Home page loading and print 'Boards' button -------
+        waitUntilElementIsClickable(By.xpath("//button[@aria-label = 'Open Boards Menu'"), 7);
+
+        WebElement boardsButton = driver.findElement(By.xpath("//button[@aria-label = 'Open Boards Menu']"));
+        Assert.assertTrue(boardsButton.isDisplayed(), "'Boards' button is not detected");
+    }
+
+    @Test
+    public void negativePasswordIncorrect() throws InterruptedException {
+        //---- Fill in login-field and press "login with Attlassian"----
+        WebElement loginField = driver.findElement(By.id("user"));
+        waitUntilElementIsClickable(By.id("user"), 7);
+        fillField(loginField,"dan.marley710@gmail.com");
+        driver.findElement(By.id("login")).click();
+        waitUntilElementIsClickable(By.id("login"), 7);
+
+        //----- Fill in password field and press login-submit button-----------
+        driver.findElement(By.id("password")).click();
+        waitUntilElementIsClickable(By.id("password"), 7);
+        driver.findElement(By.id("password")).sendKeys("incorrect");
+        driver.findElement(By.id("login-submit")).click();
+
+        //------Wait the error-message and print it -------
+        waitUntilElementIsVisible(By.id("login-error"), 7);
+        System.out.println("Error-message: " + driver
+                .findElement(By.id("login-error")).getText());
 
         WebElement errorMessage = driver.findElement(By.id("login-error"));
-        System.out.println("Error message: " + errorMessage.getText());
+        Assert.assertTrue(errorMessage.isDisplayed(), "Error message is not detected");
+
     }
-
-    @Test
-    public void loginPositive() throws InterruptedException{
-        loginButtonMainScreen();
-        WebElement loginField = driver.findElement(By.id("user"));
-        fillField(loginField, "dan.marley710@gmail.com");
-        Thread.sleep(1500);
-
-        loginButtonTrelloScreen();
-
-        WebElement passwordField = driver.findElement(By.id("password"));
-        fillField(passwordField, "dan0524003966");
-        Thread.sleep(1500);
-
-        loginSubmitButton();
-
-        WebElement boardButtonUpperLeftCorner = driver.findElement(By.xpath("//*[@class='MEu8ZECLGMLeab']"));
-        System.out.println("Name of the button is: " + boardButtonUpperLeftCorner.getText());
-    }
-
-
-
-    public void loginButtonMainScreen() throws InterruptedException {
-        WebElement loginIcon = driver.findElement(By.xpath("//a[contains(text(),'Log in')]"));
-        loginIcon.click();
-        Thread.sleep(5000);
-    }
-    public void loginButtonTrelloScreen() throws InterruptedException {
-        WebElement loginButton = driver.findElement(By.id("login"));
-        loginButton.click();
-        Thread.sleep(1500);
-    }
-    public void loginSubmitButton() throws InterruptedException {
-        WebElement loginButton = driver.findElement(By.id("login-submit"));
-        loginButton.click();
-        Thread.sleep(5000);
-    }
-    public void fillField(WebElement element, String value) {
-        element.clear();
-        element.click();
-        element.sendKeys(value);
-    }
-
-    @AfterMethod
-    public void tearDown(){
-        driver.quit();
-    }
-
-
 }
