@@ -16,7 +16,6 @@ public class loginTest extends TestBase {
         WebElement loginIcon = driver.findElement(By.xpath
                 ("//a[contains(text(),'Log in')]"));
         loginIcon.click();
-//        Thread.sleep(7000);
         waitUntilElementIsClickable(By.id("login"), 10);
     }
 
