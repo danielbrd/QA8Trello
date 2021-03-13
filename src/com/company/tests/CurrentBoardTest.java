@@ -131,7 +131,7 @@ public class CurrentBoardTest extends TestBase {
         WebElement addCard = driver.findElements(By.cssSelector(".open-card-composer")).get(findLastList);
         waitUntilElementIsClickable(By.xpath(".open-card-composer"), 7);
         addCard.click();
-
+//1
         WebElement addCardMenu = driver.findElement(By.xpath
                 ("//textarea[@placeholder='Enter a title for this card…']"));
         waitUntilElementIsClickable(By.xpath("//textarea[@placeholder='Enter a title for this card…']"), 7);
