@@ -19,52 +19,58 @@ public class CurrentBoardTest extends TestBase {
         WebElement loginIcon = driver.findElement(By.xpath
                 ("//a[contains(text(),'Log in')]"));
         loginIcon.click();
-        waitUntilElementIsClickable(By.id("login"), 10);
+        waitUntilElementIsClickable(By.id("login"), 7);
 
         WebElement loginField = driver.findElement(By.id("user"));
+        waitUntilElementIsClickable(By.id("user"), 7);
         fillField(loginField, "dan.marley710@gmail.com");
+
+        driver.findElement(By.id("login")).click();
         Thread.sleep(1000);
 
-        WebElement loginButton = driver.findElement(By.id("login"));
-        loginButton.click();
-        Thread.sleep(1000);
-
+        waitUntilElementIsClickable(By.id("password"), 7);
         WebElement passwordField = driver.findElement(By.id("password"));
         fillField(passwordField, "dan0524003966");
-        Thread.sleep(1000);
 
+        waitUntilElementIsClickable(By.id("login-submit"), 7);
         WebElement loginSubmitButton = driver.findElement(By.id("login-submit"));
         loginSubmitButton.click();
-        Thread.sleep(5000);
 
         //===== Open QA-8 Haifa board =====
+        waitUntilElementIsClickable(By.xpath
+                ("//a[@class='board-tile'][.//@title='QA8 Haifa']"), 7);
         WebElement qa8haifaBoard = driver.findElement(By.xpath
                 ("//a[@class='board-tile'][.//@title='QA8 Haifa']"));
         qa8haifaBoard.click();
-        Thread.sleep(1000);
 
-        WebElement boardButtonUpperLeftCorner =
-                driver.findElement(By.xpath("//*[@class='MEu8ZECLGMLeab']"));
+//        WebElement boardButtonUpperLeftCorner =
+//                driver.findElement(By.xpath("//*[@class='MEu8ZECLGMLeab']"));
 //        Assert.assertTrue(boardButtonUpperLeftCorner.isDisplayed(), "Boards");
     }
 
     @Test
     public void createNewList() throws InterruptedException {
+        waitUntilElementIsClickable(By.xpath
+                ("//span[@class='placeholder']/.."), 7);
         WebElement addAnotherListButton = driver.findElement(By.xpath
                 ("//span[@class='placeholder']/.."));
         addAnotherListButton.click();
-        Thread.sleep(1500);
 
+        waitUntilElementIsClickable(By.xpath
+                ("//input[@name='name']"), 7);
         WebElement enterListTitleField = driver.findElement(By.xpath
                 ("//input[@name='name']"));
         fillField(enterListTitleField, "Test");
-        Thread.sleep(800);
+
+        waitUntilElementIsClickable(By.cssSelector
+                (".js-save-edit"), 7);
         WebElement addListButton = driver.findElement(By.cssSelector(".js-save-edit"));
         addListButton.click();
-        Thread.sleep(800);
+
+        waitUntilElementIsClickable(By.cssSelector
+                (".js-cancel-edit"), 7);
         WebElement cancelEditListIcon = driver.findElement(By.cssSelector(".js-cancel-edit"));
         cancelEditListIcon.click();
-        Thread.sleep(1500);
 
         WebElement qa8cardsList = driver.findElement(By.id("board"));
 
@@ -92,19 +98,19 @@ public class CurrentBoardTest extends TestBase {
 
         //-------- Click on the header--------------
         WebElement lastHeader = driver.findElements(By.cssSelector(".list-header")).get(lastList);
-
         lastHeader.click();
-        Thread.sleep(2000);
 
         //------- Change the header -----------------
         String newHeader = "newHeader";
+        waitUntilElementIsClickable(By.cssSelector
+                (".js-list-name-input"), 7);
         WebElement lastNameList = driver.findElements(By.cssSelector(".js-list-name-input")).get(lastList);
         lastNameList.sendKeys(newHeader);
-        Thread.sleep(2000);
+        Thread.sleep(1500);
         lastNameList.sendKeys(Keys.ENTER);
-        Thread.sleep(2000);
+        Thread.sleep(1500);
         driver.navigate().refresh();
-        Thread.sleep(2000);
+        Thread.sleep(1500);
 
         lastHeader = driver.findElements(By.cssSelector(".list-header")).get(lastList);
 

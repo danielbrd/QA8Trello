@@ -26,15 +26,16 @@ public class loginTest extends TestBase {
         WebElement loginField = driver.findElement(By.id("user"));
         fillField(loginField, "123");
         //----- Поле для Пароля -----
+        waitUntilElementIsClickable(By.id("password"),7);
         WebElement passwordField = driver.findElement(By.id("password"));
         fillField(passwordField, "123");
         //----- Ожидание, пока кнопка Логин будет кликабельной -----
         waitUntilElementIsClickable(By.
-                cssSelector("#error >.error-message"), 10);
+                cssSelector("#error >.error-message"), 7);
         driver.findElement(By.id("login")).click();
         //----- Ожидание, пока появится окно ошибки -----
         waitUntilElementIsVisible(By.
-                cssSelector("#error >.error-message"), 10);
+                cssSelector("#error >.error-message"), 7);
 
         // --------- Print error message ----------
         WebElement errorMessage = driver.findElement(By.cssSelector("#error >.error-message"));
