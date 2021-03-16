@@ -42,6 +42,8 @@ public class CurrentBoardTest extends TestBase {
         WebElement qa8haifaBoard = driver.findElement(By.xpath
                 ("//a[@class='board-tile'][.//@title='QA8 Haifa']"));
         qa8haifaBoard.click();
+        //===== Waiting List loading =====
+        Thread.sleep(5000);
 
 //        WebElement boardButtonUpperLeftCorner =
 //                driver.findElement(By.xpath("//*[@class='MEu8ZECLGMLeab']"));
@@ -52,6 +54,9 @@ public class CurrentBoardTest extends TestBase {
     public void createNewList() throws InterruptedException {
         waitUntilElementIsClickable(By.xpath
                 ("//span[@class='placeholder']/.."), 7);
+
+        int firstListCount = driver.findElements(By.cssSelector(".list-header")).size()+1;
+
         WebElement addAnotherListButton = driver.findElement(By.xpath
                 ("//span[@class='placeholder']/.."));
         addAnotherListButton.click();
@@ -72,13 +77,11 @@ public class CurrentBoardTest extends TestBase {
         WebElement cancelEditListIcon = driver.findElement(By.cssSelector(".js-cancel-edit"));
         cancelEditListIcon.click();
 
-        WebElement qa8cardsList = driver.findElement(By.id("board"));
-
-        Assert.assertTrue(qa8cardsList.getText().contains("Test"),
-                "Card doesn't exists");
+        int lastListCount = driver.findElements(By.cssSelector(".list-header")).size();
+        Assert.assertEquals(firstListCount, lastListCount);
     }
 
-    @Test
+    @Test //SEL-07*
     public void changeListName() throws InterruptedException {
         WebElement addList = driver.findElement(By.xpath("//span[@class='placeholder']"));
         //----- If no list (name of the button is 'Add a list'), create the new list ----
@@ -117,20 +120,7 @@ public class CurrentBoardTest extends TestBase {
         Assert.assertEquals(lastHeader.getText(), "newHeader");
     }
 
-    @Test
-    public void deleteLastList(){
-        //----- Находим последний по индексу элемент -----
-        int findLastList = driver.findElements(By.xpath("//div[@class='list-header-extras']")).size() - 1;
-        WebElement listMenu = driver.findElements(By.xpath("//div[@class='list-header-extras']")).get(findLastList);
-        waitUntilElementIsClickable(By.xpath("//div[@class='list-header-extras']"), 7);
-        listMenu.click();
-
-        WebElement dropMenuArchiveList = driver.findElement(By.xpath("//a[@class='js-close-list']"));
-        waitUntilElementIsClickable(By.xpath("//a[@class='js-close-list']"), 7);
-        dropMenuArchiveList.click();
-    }
-
-    @Test
+    @Test //SEL-08
     public void addCardToLastList(){
         //----- Находим последний по индексу элемент -----
         int findLastList = driver.findElements(By.cssSelector(".open-card-composer")).size() - 1;
@@ -144,11 +134,27 @@ public class CurrentBoardTest extends TestBase {
         addCardMenu.click();
         fillField(addCardMenu,"Hello, teacher :)");
 
-        WebElement button = driver.findElement(By.cssSelector(".js-add-card"));
-        button.click();
+        WebElement buttonAddCard = driver.findElement(By.cssSelector(".js-add-card"));
+        buttonAddCard.click();
 
         WebElement newCard = driver.findElement(By.cssSelector(".js-card-name"));
         Assert.assertEquals(newCard.getText(), "Hello, teacher :)");
+    }
+
+    @Test // SEL-09
+    public void deleteLastList(){
+        //----- Находим последний по индексу элемент -----
+        int findLastList = driver.findElements(By.xpath("//div[@class='list-header-extras']")).size() - 1;
+        waitUntilElementIsClickable(By.xpath("//div[@class='list-header-extras']"), 7);
+        WebElement listMenu = driver.findElements(By.xpath("//div[@class='list-header-extras']")).get(findLastList);
+        listMenu.click();
+
+        waitUntilElementIsClickable(By.xpath("//a[@class='js-close-list']"), 7);
+        WebElement dropMenuArchiveList = driver.findElement(By.xpath("//a[@class='js-close-list']"));
+        dropMenuArchiveList.click();
+
+        int listCount = driver.findElements(By.cssSelector(".list-header")).size();
+        Assert.assertEquals(listCount, findLastList);
     }
 }
 
