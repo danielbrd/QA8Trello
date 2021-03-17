@@ -1,5 +1,6 @@
 package com.company.tests;
 
+import com.company.helpers.LoginPageHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -10,27 +11,28 @@ import java.util.jar.JarOutputStream;
 
 public class loginTest extends TestBase {
 
+    LoginPageHelper loginPage;
+
     @BeforeMethod
     public void initTests() throws InterruptedException {
         // ----- Press login button -----
-        WebElement loginIcon = driver.findElement(By.xpath
-                ("//a[contains(text(),'Log in')]"));
-        loginIcon.click();
-        waitUntilElementIsClickable(By.id("login"), 10);
+        loginPage = new LoginPageHelper(driver);
+        loginPage.openLoginPage();
+        loginPage.waitUntilPageIsLoaded();
+
+
     }
 
     @Test
     public void loginNegativeLoginIncorrect() throws InterruptedException {
-        //----- Выявляем поля для Логина -----
-        WebElement loginField = driver.findElement(By.id("user"));
-        fillField(loginField, "123");
-        //----- Поле для Пароля -----
-        waitUntilElementIsClickable(By.id("password"),7);
-        WebElement passwordField = driver.findElement(By.id("password"));
-        fillField(passwordField, "123");
+        //----- Заполняем поля для Логина -----
+        loginPage.enterLoginNotAtlacian("123");
+        //----- Заполняем поле для Пароля -----
+        loginPage.enterPasswordNotAtlacian("123");
+        Thread.sleep(2000);
+
         //----- Ожидание, пока кнопка Логин будет кликабельной -----
-        waitUntilElementIsClickable(By.
-                cssSelector("#error >.error-message"), 7);
+        waitUntilElementIsClickable(By.id("login"), 7);
         driver.findElement(By.id("login")).click();
         //----- Ожидание, пока появится окно ошибки -----
         waitUntilElementIsVisible(By.

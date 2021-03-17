@@ -10,6 +10,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.nio.file.WatchEvent;
+import java.util.concurrent.TimeUnit;
 
 public class CurrentBoardTest extends TestBase {
 
@@ -43,7 +44,7 @@ public class CurrentBoardTest extends TestBase {
                 ("//a[@class='board-tile'][.//@title='QA8 Haifa']"));
         qa8haifaBoard.click();
         //===== Waiting List loading =====
-        Thread.sleep(5000);
+        waitUntilAllElementsArePresent(By.cssSelector(".list-header"),15);
 
 //        WebElement boardButtonUpperLeftCorner =
 //                driver.findElement(By.xpath("//*[@class='MEu8ZECLGMLeab']"));
@@ -83,6 +84,8 @@ public class CurrentBoardTest extends TestBase {
 
     @Test //SEL-07*
     public void changeListName() throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
         WebElement addList = driver.findElement(By.xpath("//span[@class='placeholder']"));
         //----- If no list (name of the button is 'Add a list'), create the new list ----
         if (addList.getText().equals("Add a list")) {

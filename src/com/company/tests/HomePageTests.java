@@ -9,9 +9,9 @@ import org.testng.annotations.Test;
 public class HomePageTests extends TestBase {
 
     @Test
-    public void applicationTest() {
-        System.out.println("Title: " + driver.getTitle());
-        Assert.assertEquals(driver.getTitle(),
+//----- Получение тайтла через метод getPageTitle() -----
+    public void applicationTest(){
+        Assert.assertEquals(homePage.getPageTitle(),
                 "Trello", "Appl. is not Trello");
     }
 }
