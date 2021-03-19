@@ -3,39 +3,40 @@ package com.company.tests;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.nio.file.WatchEvent;
 import java.util.concurrent.TimeUnit;
 
 public class CurrentBoardTest extends TestBase {
 
     @BeforeMethod
-    public void initTests() throws InterruptedException {
+    public void initTests(){
         // ----- Press login button -----
         WebElement loginIcon = driver.findElement(By.xpath
                 ("//a[contains(text(),'Log in')]"));
         loginIcon.click();
-        waitUntilElementIsClickable(By.id("login"), 7);
-
-        WebElement loginField = driver.findElement(By.id("user"));
         waitUntilElementIsClickable(By.id("user"), 7);
+
+        //---- Fill in login-field and press "login with Attlassian"----
+        WebElement loginField = driver.findElement(By.id("user"));
         fillField(loginField, "dan.marley710@gmail.com");
-
+        waitUntilElementIsClickable
+                (By.xpath("//input[@value = 'Log in with Atlassian']"),10);
         driver.findElement(By.id("login")).click();
-        Thread.sleep(1000);
 
+        //----- Fill in password field and press login-submit button-----------
         waitUntilElementIsClickable(By.id("password"), 7);
-        WebElement passwordField = driver.findElement(By.id("password"));
-        fillField(passwordField, "dan0524003966");
+        driver.findElement(By.id("password")).click();
+        driver.findElement(By.id("password")).sendKeys("dan0524003966");
 
         waitUntilElementIsClickable(By.id("login-submit"), 7);
-        WebElement loginSubmitButton = driver.findElement(By.id("login-submit"));
-        loginSubmitButton.click();
+        driver.findElement(By.id("login-submit")).click();
+
+//        //------Wait the Home page loading and print 'Boards' button -------
+//        waitUntilElementIsClickable(By.xpath("//button[@aria-label = 'Open Boards Menu']"),10);
+//        System.out.println("Name of the button 'Boards': " + driver
+//                .findElement(By.xpath("//button[@aria-label = 'Open Boards Menu']")).getText());
 
         //===== Open QA-8 Haifa board =====
         waitUntilElementIsClickable(By.xpath
@@ -43,12 +44,8 @@ public class CurrentBoardTest extends TestBase {
         WebElement qa8haifaBoard = driver.findElement(By.xpath
                 ("//a[@class='board-tile'][.//@title='QA8 Haifa']"));
         qa8haifaBoard.click();
-        //===== Waiting List loading =====
         waitUntilAllElementsArePresent(By.cssSelector(".list-header"),15);
 
-//        WebElement boardButtonUpperLeftCorner =
-//                driver.findElement(By.xpath("//*[@class='MEu8ZECLGMLeab']"));
-//        Assert.assertTrue(boardButtonUpperLeftCorner.isDisplayed(), "Boards");
     }
 
     @Test
@@ -125,6 +122,21 @@ public class CurrentBoardTest extends TestBase {
 
     @Test //SEL-08
     public void addCardToLastList(){
+        WebElement addList = driver.findElement(By.xpath("//span[@class='placeholder']"));
+        //----- If no list (name of the button is 'Add a list'), create the new list ----
+        if(addList.getText().equals("Add a list")){
+            addList.click();
+            waitUntilElementIsClickable(By.xpath("//input[@name = 'name']"),10);
+            WebElement newNameList = driver.findElement(By.cssSelector("input[name='name']"));
+            fillField(newNameList,"test");
+            WebElement saveList = driver.findElement(By.cssSelector("input.js-save-edit"));
+            saveList.click();
+            waitUntilElementIsClickable(By.cssSelector(".js-cancel-edit"),10);
+            WebElement cancelEditList = driver.findElement(By.cssSelector(".js-cancel-edit"));
+            cancelEditList.click();
+        }
+        waitUntilAllElementsArePresent(By.cssSelector(".list-header"),15);
+
         //----- Находим последний по индексу элемент -----
         int findLastList = driver.findElements(By.cssSelector(".open-card-composer")).size() - 1;
         WebElement addCard = driver.findElements(By.cssSelector(".open-card-composer")).get(findLastList);
@@ -146,16 +158,32 @@ public class CurrentBoardTest extends TestBase {
 
     @Test // SEL-09
     public void deleteLastList(){
+        WebElement addList = driver.findElement(By.xpath("//span[@class='placeholder']"));
+        //----- If no list (name of the button is 'Add a list'), create the new list ----
+        if(addList.getText().equals("Add a list")){
+            addList.click();
+            waitUntilElementIsClickable(By.xpath("//input[@name = 'name']"),10);
+            WebElement newNameList = driver.findElement(By.cssSelector("input[name='name']"));
+            fillField(newNameList,"test");
+            WebElement saveList = driver.findElement(By.cssSelector("input.js-save-edit"));
+            saveList.click();
+            waitUntilElementIsClickable(By.cssSelector(".js-cancel-edit"),10);
+            WebElement cancelEditList = driver.findElement(By.cssSelector(".js-cancel-edit"));
+            cancelEditList.click();
+        }
+        waitUntilAllElementsArePresent(By.cssSelector(".list-header"),15);
         //----- Находим последний по индексу элемент -----
         int findLastList = driver.findElements(By.xpath("//div[@class='list-header-extras']")).size() - 1;
         waitUntilElementIsClickable(By.xpath("//div[@class='list-header-extras']"), 7);
         WebElement listMenu = driver.findElements(By.xpath("//div[@class='list-header-extras']")).get(findLastList);
         listMenu.click();
 
+        //------- Wait 'Archive List' option disappears ---------
         waitUntilElementIsClickable(By.xpath("//a[@class='js-close-list']"), 7);
         WebElement dropMenuArchiveList = driver.findElement(By.xpath("//a[@class='js-close-list']"));
         dropMenuArchiveList.click();
 
+        // ----- Define the quantity of cards after  --------------
         int listCount = driver.findElements(By.cssSelector(".list-header")).size();
         Assert.assertEquals(listCount, findLastList);
     }

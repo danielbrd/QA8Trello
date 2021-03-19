@@ -14,20 +14,54 @@ import org.testng.annotations.BeforeMethod;
 public class TestBase {
     WebDriver driver;
     HomePageHelper homePage;
+    public static final String LOGIN = "dan.marley710@gmail.com";
+    public static final String PASSWORD = "dan0524003966";
 
     @BeforeMethod
         public void startApplication() throws InterruptedException {
         driver = new ChromeDriver();
         homePage = new HomePageHelper(driver);
+        //----Driver initialization. Open Trello application-------
+        //ChromeOptions options = new ChromeOptions();
+        //options.addArguments("--lang=" + "rus");
+        //driver = new ChromeDriver(options);
         driver.get("https://trello.com/");
         homePage.waitUntilPageIsLoaded();
+    }
 
+    @AfterMethod
+    public void tearDown(){
+        driver.quit();
+    }
+
+    public void fillField(WebElement element, String value) {
+        element.click();
+        element.clear();
+        element.sendKeys(value);
     }
 
     public void waitUntilElementIsClickable(By locator, int time) {
         try {
             new WebDriverWait(driver, time).until
                     (ExpectedConditions.elementToBeClickable(locator));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void waitUntilElementIsPresent(By locator, int time) {
+
+        try {
+            new WebDriverWait(driver, time).until(ExpectedConditions.presenceOfElementLocated(locator));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void waitUntilElementDisappears(By locator, int time) {
+
+        try {
+            new WebDriverWait(driver, time).until(ExpectedConditions.invisibilityOfElementLocated(locator));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,14 +85,4 @@ public class TestBase {
         }
     }
 
-    @AfterMethod
-    public void tearDown(){
-        driver.quit();
-    }
-
-    public void fillField(WebElement element, String value) {
-        element.click();
-        element.clear();
-        element.sendKeys(value);
-    }
 }
