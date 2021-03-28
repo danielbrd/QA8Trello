@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 public class LoginPageHelper extends PageBase{
-
     public LoginPageHelper(WebDriver driver) {
         super(driver);
     }
