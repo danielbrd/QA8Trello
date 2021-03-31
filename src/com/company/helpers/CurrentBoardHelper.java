@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 
 public class CurrentBoardHelper extends PageBase {
     String boardName;
@@ -11,6 +12,7 @@ public class CurrentBoardHelper extends PageBase {
     public CurrentBoardHelper(WebDriver driver, String boardName) {
         super(driver);
         this.boardName = boardName;
+        PageFactory.initElements(driver, this);
     }
 
     public void openCurrentBoardPage(){
@@ -19,35 +21,34 @@ public class CurrentBoardHelper extends PageBase {
         qaHaifa8Board.click();
     }
 
-
-    public void waitUntilPageIsLoaded() {
-        waitUntilElementIsClickable(By.cssSelector(".mod-show-menu"), 10);
-    }
+//    public void waitUntilPageIsLoaded() {
+//        waitUntilElementIsClickable(By.cssSelector(".mod-show-menu"), 10);
+//    }
 
     public int getListsQuantity(){
         return driver.findElements(By.cssSelector(".list-header")).size();
     }
 
-    public void addNewList(String nameList) {
-        WebElement addListButton = driver.findElement(By.xpath("//span[@class='placeholder']/.."));
-        addListButton.click();
-        waitUntilElementIsClickable(By.xpath("//input[@name = 'name']"),10);
-        WebElement titleListField = driver.findElement(By.xpath("//input[@name = 'name']"));
-        fillField(titleListField,nameList);
-        WebElement submitButton = driver.findElement(By.cssSelector(".js-save-edit"));
-        submitButton.click();
-        WebElement cancelEditList = driver.findElement(By.cssSelector(".js-cancel-edit"));
-        cancelEditList.click();
-        waitUntilAllElementsArePresent(By.cssSelector(".list-header"),15);
-    }
-
-    public int getCardsQuantity(){
-        return driver.findElements(By.cssSelector(".js-card-details")).size();
-    }
-
-    public String getAddListButtonName(){
-        return driver.findElement(By.xpath("//span[@class='placeholder']")).getText();
-    }
+//    public void addNewList(String nameList) {
+//        WebElement addListButton = driver.findElement(By.xpath("//span[@class='placeholder']/.."));
+//        addListButton.click();
+//        waitUntilElementIsClickable(By.xpath("//input[@name = 'name']"),10);
+//        WebElement titleListField = driver.findElement(By.xpath("//input[@name = 'name']"));
+//        fillField(titleListField,nameList);
+//        WebElement submitButton = driver.findElement(By.cssSelector(".js-save-edit"));
+//        submitButton.click();
+//        WebElement cancelEditList = driver.findElement(By.cssSelector(".js-cancel-edit"));
+//        cancelEditList.click();
+//        waitUntilAllElementsArePresent(By.cssSelector(".list-header"),15);
+//    }
+//
+//    public int getCardsQuantity(){
+//        return driver.findElements(By.cssSelector(".js-card-details")).size();
+//    }
+//
+//    public String getAddListButtonName(){
+//        return driver.findElement(By.xpath("//span[@class='placeholder']")).getText();
+//    }
 
     public void waitUntilBoardsButtonIsClickable() {
         waitUntilElementIsClickable(By.xpath
@@ -75,25 +76,25 @@ public class CurrentBoardHelper extends PageBase {
         addList.click();
     }
 
-    public void findLastList() {
-        waitUntilAllElementsArePresent(By.cssSelector(".list-header"), 15);
-        int findLastList = driver.findElements(By.cssSelector(".open-card-composer")).size() - 1;
-        WebElement addCard = driver.findElements(By.cssSelector(".open-card-composer")).get(findLastList);
-        waitUntilElementIsClickable(By.xpath(".open-card-composer"), 7);
-        addCard.click();
-    }
-
-    public void enterNewCardToSelectedList(String title) {
-        waitUntilElementIsClickable(By.xpath("//textarea[@placeholder='Enter a title for this card…']"), 7);
-        WebElement addCardMenu = driver.findElement(By.xpath
-                ("//textarea[@placeholder='Enter a title for this card…']"));
-        addCardMenu.click();
-            waitUntilElementIsClickable(By.xpath
-                    ("//input[@name='name']"), 7);
-            WebElement enterListTitleField = driver.findElement(By.xpath
-                    ("//input[@name='name']"));
-            fillField(enterListTitleField, title);
-    }
+//    public void findLastList() {
+//        waitUntilAllElementsArePresent(By.cssSelector(".list-header"), 15);
+//        int findLastList = driver.findElements(By.cssSelector(".open-card-composer")).size() - 1;
+//        WebElement addCard = driver.findElements(By.cssSelector(".open-card-composer")).get(findLastList);
+//        waitUntilElementIsClickable(By.xpath(".open-card-composer"), 7);
+//        addCard.click();
+//    }
+//
+//    public void enterNewCardToSelectedList(String title) {
+//        waitUntilElementIsClickable(By.xpath("//textarea[@placeholder='Enter a title for this card…']"), 7);
+//        WebElement addCardMenu = driver.findElement(By.xpath
+//                ("//textarea[@placeholder='Enter a title for this card…']"));
+//        addCardMenu.click();
+//            waitUntilElementIsClickable(By.xpath
+//                    ("//input[@name='name']"), 7);
+//            WebElement enterListTitleField = driver.findElement(By.xpath
+//                    ("//input[@name='name']"));
+//            fillField(enterListTitleField, title);
+//    }
 
     public void ifHaveNoListsAddNew(String nameList) {
         waitUntilElementIsClickable(By.xpath("//span[@class='placeholder']"), 7);
@@ -112,7 +113,7 @@ public class CurrentBoardHelper extends PageBase {
         }
     }
 
-    public void findAndRenameList() {
+    public void findAndRenameList(String lastListName) {
         int quantity = getListsQuantity()-1;
         WebElement lastHeader = driver.findElements(By.cssSelector(".list-header")).get(quantity);
 
@@ -121,7 +122,7 @@ public class CurrentBoardHelper extends PageBase {
 
         WebElement lastNameList = driver.findElements
                 (By.cssSelector(".js-list-name-input")).get(quantity);
-        lastNameList.sendKeys("1");
+        lastNameList.sendKeys(lastListName);
         lastNameList.sendKeys(Keys.ENTER);
         driver.navigate().refresh();
         waitUntilAllElementsArePresent

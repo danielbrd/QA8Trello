@@ -13,7 +13,7 @@ public class MemberMenuTests extends TestBase{
     MemberMenuHelper memberMenu;
 
     @BeforeMethod
-    public void initTests() throws InterruptedException {
+    public void initTests(){
         loginPage = new LoginPageHelper(driver);
         boardsPage = new BoardsPageHelper(driver);
         memberMenu = new MemberMenuHelper(driver);
@@ -27,9 +27,9 @@ public class MemberMenuTests extends TestBase{
     @Test
     public void memberMenuFindEmail(){
         boardsPage.memberMenuClick();
-        memberMenu.getMembersEmail();
-        System.out.println(memberMenu.getMembersEmail());
-        Assert.assertTrue(memberMenu.getMembersEmail().contains("@"));
+        memberMenu.getMemberEmail();
+        System.out.println(memberMenu.getMemberEmail());
+        Assert.assertTrue(memberMenu.getMemberEmail().contains("@"));
     }
 
 

@@ -15,7 +15,7 @@ public class CurrentBoardTests extends TestBase {
 
 
     @BeforeMethod
-    public void initTests() throws InterruptedException {
+    public void initTests(){
         loginPage = new LoginPageHelper(driver);
         boardsPage = new BoardsPageHelper(driver);
         qa8haifaBoard = new CurrentBoardHelper(driver, "QA8 Haifa");
@@ -42,10 +42,10 @@ public class CurrentBoardTests extends TestBase {
     @Test //SEL-07*
     public void changeLastListName() {
         qa8haifaBoard.ifHaveNoListsAddNew("New");
-        qa8haifaBoard.findAndRenameList();
+        qa8haifaBoard.findAndRenameList("Haver");
         qa8haifaBoard.getLastListName();
 
-        Assert.assertTrue(qa8haifaBoard.getLastListName().contains("New"));
+        Assert.assertTrue(qa8haifaBoard.getLastListName().contains("Haver"));
     }
 
     @Test //SEL-08

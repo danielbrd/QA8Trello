@@ -3,22 +3,35 @@ package com.company.helpers;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;
+import org.openqa.selenium.support.FindBy;
 
 public class LoginPageHelper extends PageBase{
+    @FindBy(xpath = "//a[contains(text(),'Log in')]")
+    WebElement loginIcon;
+    @FindBy(id = "user")
+    WebElement loginField;
+    @FindBy(id = "login")
+    WebElement loginButton;
+    @FindBy(id = "password")
+    WebElement passwordField;
+    @FindBy(css = "#error >.error-message")
+    WebElement errorMessageNotAttl;
+    @FindBy(xpath = "//input[@value = 'Log in with Atlassian']")
+    WebElement loginAsAttlButton;
+
     public LoginPageHelper(WebDriver driver) {
         super(driver);
     }
 
     public void openLoginPage() {
-        WebElement loginIcon = driver.findElement
-                (By.xpath("//a[contains(text(),'Log in')]"));
+//        WebElement loginIcon = driver.findElement
+//                (By.xpath("//a[contains(text(),'Log in')]"));
         loginIcon.click();
     }
 
     public void waitUntilPageIsLoaded() {
-        waitUntilElementIsClickable(By.id("user"),10);
-        waitUntilElementIsClickable(By.id("login"),20);
+        waitUntilElementIsClickable(loginField,10);
+        waitUntilElementIsClickable(loginButton,20);
     }
 
     public void enterLoginPassNotAttl(String login, String password) {
@@ -35,16 +48,16 @@ public class LoginPageHelper extends PageBase{
     }
 
     public void enterLoginNotAttl(String value) {
-        WebElement loginField = driver.findElement(By.id("user"));
+//        WebElement loginField = driver.findElement(By.id("user"));
         fillField(loginField,value);
 
     }
 
     public void enterPasswordNotAttl(String value) {
-        waitUntilElementIsClickable(By.id("password"),10);
-        WebElement passwordField = driver.findElement(By.id("password"));
+        waitUntilElementIsClickable(passwordField,10);
+//      WebElement passwordField = driver.findElement(By.id("password"));
         fillField(passwordField,value);
-        //to be sure that loginField and passwordField are already filled in
+// ----- To be sure that loginField and passwordField are already filled in -----
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -54,22 +67,23 @@ public class LoginPageHelper extends PageBase{
     }
 
     public void clickLoginInButtonNotAttl() {
-        waitUntilElementIsClickable(By.id("login"),20);
-        driver.findElement(By.id("login")).click();
+//        waitUntilElementIsClickable(By.id("login"),20);
+//        driver.findElement(By.id("login")).click();
+        waitUntilElementIsClickable(loginButton,20);
+        loginButton.click();
 
     }
 
     public String getErrorNotAttlMessage(){
-        waitUntilElementIsVisible(By.cssSelector("#error >.error-message"),20);
-        WebElement errorMessage = driver
-                .findElement(By.cssSelector("#error >.error-message"));
-        System.out.println("Error-message: " + errorMessage.getText());
-        return errorMessage.getText();
+        waitUntilElementIsVisible(errorMessageNotAttl,20);
+        return errorMessageNotAttl.getText();
     }
 
     public void clickLoginAttl() {
-        waitUntilElementIsClickable(By.xpath("//input[@value = 'Log in with Atlassian']"),10);
-        driver.findElement(By.id("login")).click();
+//        waitUntilElementIsClickable(By.xpath("//input[@value = 'Log in with Atlassian']"),10);
+//        driver.findElement(By.id("login")).click();
+        waitUntilElementIsClickable(loginAsAttlButton,10);
+        loginAsAttlButton.click();
     }
 
     public void enterPasswordAttl(String value) {
