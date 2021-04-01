@@ -7,10 +7,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
+
 public class CurrentBoardHelper extends PageBase {
     String boardName;
+
+
     @FindBy(css = ".list-header")
-    WebElement listsQuantity;
+    List<WebElement> listQuantity;
     @FindBy(xpath = "//span[@class='placeholder']/..")
     WebElement boardsButton;
     @FindBy(xpath = "//input[@name='name']")
@@ -34,7 +38,6 @@ public class CurrentBoardHelper extends PageBase {
     @FindBy(css = ".js-cancel")
     WebElement closeCardMenu;
 
-
     public CurrentBoardHelper(WebDriver driver, String boardName) {
         super(driver);
         this.boardName = boardName;
@@ -48,7 +51,7 @@ public class CurrentBoardHelper extends PageBase {
     }
 
     public int getListsQuantity(){
-        return driver.findElements(By.cssSelector(".list-header")).size();
+        return listQuantity.size();
     }
 
     public void waitUntilBoardsButtonIsClickable() {
@@ -82,7 +85,9 @@ public class CurrentBoardHelper extends PageBase {
     }
 
     public void findAndRenameList(String lastListName) {
-        int quantity = getListsQuantity()-1;
+//      int quantity = getListsQuantity()-1;
+        int quantity = listQuantity.size()-1;
+
         WebElement lastHeader = driver.findElements(By.cssSelector(".list-header")).get(quantity);
         lastHeader.click();
 
