@@ -8,6 +8,8 @@ import org.openqa.selenium.support.FindBy;
 public class BoardsPageHelper extends PageBase {
         @FindBy(xpath = "//button[@aria-label = 'Open boards menu']")
         WebElement openBoardsButton;
+        @FindBy(css = ".js-open-header-member-menu")
+        WebElement memberMenu;
 
 
     public BoardsPageHelper(WebDriver driver) {
@@ -35,8 +37,7 @@ public class BoardsPageHelper extends PageBase {
 //    }
 
     public void memberMenuClick() {
-        WebElement memberMenu = driver.findElement
-                (By.cssSelector(".js-open-header-member-menu"));
+        waitUntilElementIsClickable(memberMenu, 10);
         memberMenu.click();
     }
 }

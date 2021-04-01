@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 public class LoginTests extends TestBase {
     LoginPageHelper loginPage;
     BoardsPageHelper boardsPage;
-    HomePageHelper homePage;
 
     @BeforeMethod
     public void initTests() {

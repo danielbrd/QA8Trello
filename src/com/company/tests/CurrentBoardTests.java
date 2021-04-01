@@ -4,6 +4,7 @@ import com.company.helpers.BoardsPageHelper;
 import com.company.helpers.LoginPageHelper;
 import com.company.helpers.CurrentBoardHelper;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -16,9 +17,11 @@ public class CurrentBoardTests extends TestBase {
 
     @BeforeMethod
     public void initTests(){
-        loginPage = new LoginPageHelper(driver);
-        boardsPage = new BoardsPageHelper(driver);
+//        loginPage = new LoginPageHelper(driver);
+//        boardsPage = new BoardsPageHelper(driver);
         qa8haifaBoard = new CurrentBoardHelper(driver, "QA8 Haifa");
+        loginPage = PageFactory.initElements(driver, LoginPageHelper.class);
+        boardsPage = PageFactory.initElements(driver, BoardsPageHelper.class);
 
         loginPage.openLoginPage();
         loginPage.waitUntilPageIsLoaded();

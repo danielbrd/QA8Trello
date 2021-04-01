@@ -55,6 +55,7 @@ public class PageBase {
             e.printStackTrace();
         }
     }
+
     public void waitUntilElementIsVisible(By locator, int time) {
 
         try {

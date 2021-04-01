@@ -35,16 +35,16 @@ public class LoginPageHelper extends PageBase{
     }
 
     public void enterLoginPassNotAttl(String login, String password) {
-        this.enterLoginNotAttl(login);
-        this.enterPasswordNotAttl(password);
-        this.clickLoginInButtonNotAttl();
+        enterLoginNotAttl(login); //without 'this.'
+        enterPasswordNotAttl(password);
+        clickLoginInButtonNotAttl();
     }
 
     public void enterLoginPasswordAttl(String login, String password) {
-        this.enterLoginNotAttl(login);
-        this.clickLoginAttl();
-        this.enterPasswordAttl(password);
-        this.submitAttl();
+        enterLoginNotAttl(login);
+        clickLoginAttl();
+        enterPasswordAttl(password);
+        submitAttl();
     }
 
     public void enterLoginNotAttl(String value) {
