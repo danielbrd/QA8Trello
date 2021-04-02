@@ -95,7 +95,7 @@ public class CurrentBoardHelper extends PageBase {
 //      int quantity = getListsQuantity()-1;
         int quantity = listQuantity.size()-1;
 
-//        WebElement lastHeader = driver.findElements(By.cssSelector(".list-header")).get(quantity);
+//      WebElement lastHeader = driver.findElements(By.cssSelector(".list-header")).get(quantity);
         WebElement lastHeader = listQuantity.get(quantity);
         lastHeader.click();
 
