@@ -15,6 +15,14 @@ public class CurrentBoardHelper extends PageBase {
 
     @FindBy(css = ".list-header")
     List<WebElement> listQuantity;
+    @FindBy(css = ".js-list-name-input")
+    List<WebElement> lastNameList;
+    @FindBy(css = ".js-list-name-input")
+    WebElement lastNameWebElement;
+    @FindBy(css = ".open-card-composer")
+    WebElement cardComposerWebElement;
+    @FindBy(css = ".open-card-composer")
+    List<WebElement> cardComposerList;
     @FindBy(xpath = "//span[@class='placeholder']/..")
     WebElement boardsButton;
     @FindBy(xpath = "//input[@name='name']")
@@ -29,8 +37,6 @@ public class CurrentBoardHelper extends PageBase {
     WebElement listActionsMenu;
     @FindBy(xpath = "//a[@class='js-close-list']")
     WebElement dropMenuArchiveList;
-    @FindBy(css = ".js-list-name-input")
-    WebElement lastNameList;
     @FindBy(css = ".js-card-title")
     WebElement cardName;
     @FindBy(css = ".js-add-card")
@@ -51,6 +57,7 @@ public class CurrentBoardHelper extends PageBase {
     }
 
     public int getListsQuantity(){
+        //return driver.findElements(By.cssSelector(".list-header")).size();
         return listQuantity.size();
     }
 
@@ -84,41 +91,40 @@ public class CurrentBoardHelper extends PageBase {
         }
     }
 
-    public void findAndRenameList(String lastListName) {
+    public void findAndRenameList(String name) {
 //      int quantity = getListsQuantity()-1;
         int quantity = listQuantity.size()-1;
 
-        WebElement lastHeader = driver.findElements(By.cssSelector(".list-header")).get(quantity);
+//        WebElement lastHeader = driver.findElements(By.cssSelector(".list-header")).get(quantity);
+        WebElement lastHeader = listQuantity.get(quantity);
         lastHeader.click();
 
-        waitUntilElementIsClickable(lastNameList,10);
-        WebElement lastNameList = driver.findElements
-                (By.cssSelector(".js-list-name-input")).get(quantity);
-        lastNameList.sendKeys(lastListName);
-        lastNameList.sendKeys(Keys.ENTER);
+        waitUntilElementIsClickable(lastNameWebElement,10);
+        WebElement lastNameObject = lastNameList.get(quantity);
+        lastNameObject.sendKeys(name);
+        lastNameObject.sendKeys(Keys.ENTER);
         driver.navigate().refresh();
         waitUntilAllElementsArePresent
                 (By.cssSelector(".list-header"),15);
     }
 
     public String getLastListName() {
-        WebElement lastNameList = driver.findElements
-                (By.cssSelector(".js-list-name-input")).get(getListsQuantity()-1);
+
+        WebElement lastName = lastNameList.get(getListsQuantity()-1);
         if (getListsQuantity() == 0) return "Have no lists";
-        return lastNameList.getText();
+        return lastName.getText();
     }
 
-    public void addCardToLastList() {
-        int quantity = getListsQuantity()-1;
-        waitUntilElementIsClickable(By.cssSelector(".open-card-composer"),10);
+    public void addCardToLastList(String card) {
+        int quantity = listQuantity.size()-1;
+        waitUntilElementIsClickable(cardComposerWebElement,10);
 
-        WebElement addNewCard = driver.findElements
-                (By.cssSelector(".open-card-composer")).get(quantity);
+        WebElement addNewCard = cardComposerList.get(quantity);
         addNewCard.click();
 
         //----- Fill New Card Name Field -----
         waitUntilElementIsClickable(cardName,10);
-        fillField(cardName,"new card");
+        fillField(cardName,card);
 
         //----- Define 'Add Card' button and click it -----------
         addCard.click();

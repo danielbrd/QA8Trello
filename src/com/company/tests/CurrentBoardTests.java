@@ -35,7 +35,7 @@ public class CurrentBoardTests extends TestBase {
         qa8haifaBoard.waitUntilBoardsButtonIsClickable();
         int firstListCount = driver.findElements(By.cssSelector(".list-header")).size();
         qa8haifaBoard.addAnotherListButtonClick();
-        qa8haifaBoard.enterListTitleField("List");
+        qa8haifaBoard.enterListTitleField("This is the New List");
         qa8haifaBoard.saveNewListAddListButtonClick();
         int lastListCount = driver.findElements(By.cssSelector(".list-header")).size();
         Assert.assertEquals(firstListCount+1, lastListCount,
@@ -44,19 +44,19 @@ public class CurrentBoardTests extends TestBase {
 
     @Test //SEL-07*
     public void changeLastListName() {
-        qa8haifaBoard.ifHaveNoListsAddNew("New");
-        qa8haifaBoard.findAndRenameList("Haver");
+        qa8haifaBoard.ifHaveNoListsAddNew("Another New List");
+        qa8haifaBoard.findAndRenameList("777");
         qa8haifaBoard.getLastListName();
 
-        Assert.assertTrue(qa8haifaBoard.getLastListName().contains("Haver"));
+        Assert.assertTrue(qa8haifaBoard.getLastListName().contains("777"));
     }
 
     @Test //SEL-08
     public void addCardToLastList() {
-        qa8haifaBoard.ifHaveNoListsAddNew("newList");
+        qa8haifaBoard.ifHaveNoListsAddNew("And Another NewList");
         qa8haifaBoard.waitUntilAllElementsArePresent(By.cssSelector(".list-header"),15);
         int cardsBefore = driver.findElements(By.cssSelector(".js-card-details")).size();
-        qa8haifaBoard.addCardToLastList();
+        qa8haifaBoard.addCardToLastList("Brand New Card!!");
         int cardsAfter = driver.findElements(By.cssSelector(".js-card-details")).size();
 
         Assert.assertEquals(cardsBefore+1,cardsAfter,
@@ -66,7 +66,7 @@ public class CurrentBoardTests extends TestBase {
 
     @Test // SEL-09
     public void deleteLastList() {
-        qa8haifaBoard.ifHaveNoListsAddNew("LIST");
+        qa8haifaBoard.ifHaveNoListsAddNew("What? Again?");
         qa8haifaBoard.waitUntilAllElementsArePresent(By.cssSelector(".list-header"),15);
         int firstListCount = driver.findElements(By.xpath("//div[@class='list-header-extras']")).size();
         qa8haifaBoard.findAndDeleteList();
