@@ -23,37 +23,42 @@ public class LoginPageHelper extends PageBase{
         super(driver);
     }
 
-    public void openLoginPage() {
+    public LoginPageHelper openLoginPage() {
 //        WebElement loginIcon = driver.findElement
 //                (By.xpath("//a[contains(text(),'Log in')]"));
         loginIcon.click();
+        return this;
     }
 
-    public void waitUntilPageIsLoaded() {
+//    public void waitUntilPageIsLoaded() {
+        public LoginPageHelper waitUntilPageIsLoaded() {
         waitUntilElementIsClickable(loginField,10);
         waitUntilElementIsClickable(loginButton,20);
+        return this;
     }
 
-    public void enterLoginPassNotAttl(String login, String password) {
+    public LoginPageHelper enterLoginPassNotAttl(String login, String password) {
         enterLoginNotAttl(login); //without 'this.'
         enterPasswordNotAttl(password);
         clickLoginInButtonNotAttl();
+        return this;
     }
 
-    public void enterLoginPasswordAttl(String login, String password) {
+    public LoginPageHelper enterLoginPasswordAttl(String login, String password) {
         enterLoginNotAttl(login);
         clickLoginAttl();
         enterPasswordAttl(password);
         submitAttl();
+        return this;
     }
 
-    public void enterLoginNotAttl(String value) {
+    public LoginPageHelper enterLoginNotAttl(String value) {
 //        WebElement loginField = driver.findElement(By.id("user"));
         fillField(loginField,value);
-
+        return this;
     }
 
-    public void enterPasswordNotAttl(String value) {
+    public LoginPageHelper enterPasswordNotAttl(String value) {
         waitUntilElementIsClickable(passwordField,10);
 //      WebElement passwordField = driver.findElement(By.id("password"));
         fillField(passwordField,value);
@@ -63,15 +68,15 @@ public class LoginPageHelper extends PageBase{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        return this;
     }
 
-    public void clickLoginInButtonNotAttl() {
+    public LoginPageHelper clickLoginInButtonNotAttl() {
 //        waitUntilElementIsClickable(By.id("login"),20);
 //        driver.findElement(By.id("login")).click();
         waitUntilElementIsClickable(loginButton,20);
         loginButton.click();
-
+        return this;
     }
 
     public String getErrorNotAttlMessage(){
@@ -79,23 +84,25 @@ public class LoginPageHelper extends PageBase{
         return errorMessageNotAttl.getText();
     }
 
-    public void clickLoginAttl() {
+    public LoginPageHelper clickLoginAttl() {
 //        waitUntilElementIsClickable(By.xpath("//input[@value = 'Log in with Atlassian']"),10);
 //        driver.findElement(By.id("login")).click();
         waitUntilElementIsClickable(loginAsAttlButton,10);
         loginAsAttlButton.click();
+        return this;
     }
 
-    public void enterPasswordAttl(String value) {
+    public LoginPageHelper enterPasswordAttl(String value) {
         waitUntilElementIsClickable(By.id("password"),10);
         WebElement passwordField = driver.findElement(By.id("password"));
         fillField(passwordField,value);
-
+        return this;
     }
 
-    public void submitAttl() {
+    public LoginPageHelper submitAttl() {
         waitUntilElementIsClickable(By.id("login-submit"),10);
         driver.findElement(By.id("login-submit")).click();
+        return this;
     }
 
     public String getErrorAttlMessage() {

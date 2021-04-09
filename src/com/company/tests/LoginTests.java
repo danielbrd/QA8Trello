@@ -19,8 +19,8 @@ public class LoginTests extends TestBase {
         loginPage = PageFactory.initElements(driver, LoginPageHelper.class);
 //        boardsPage = new BoardsPageHelper(driver);
         boardsPage = PageFactory.initElements(driver, BoardsPageHelper.class);
-        loginPage.openLoginPage();
-        loginPage.waitUntilPageIsLoaded();
+        loginPage.openLoginPage()
+                .waitUntilPageIsLoaded();
     }
 
     @Test
@@ -51,9 +51,9 @@ public class LoginTests extends TestBase {
     @Test
     public void negativePasswordIncorrect() {
 //        //---- Fill in login-field and press "login with Attlassian"----
-        loginPage.enterLoginPasswordAttl(LOGIN, "123");
+        loginPage.enterLoginPasswordAttl(LOGIN, "123")
 //        //----- Fill in password field and press login-submit button-----------
-        loginPage.getErrorAttlMessage();
+                .getErrorAttlMessage();
 
         Assert.assertTrue(loginPage.getErrorAttlMessage().contains("email"));
     }

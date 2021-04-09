@@ -23,9 +23,9 @@ public class CurrentBoardTests extends TestBase {
         loginPage = PageFactory.initElements(driver, LoginPageHelper.class);
         boardsPage = PageFactory.initElements(driver, BoardsPageHelper.class);
 
-        loginPage.openLoginPage();
-        loginPage.waitUntilPageIsLoaded();
-        loginPage.enterLoginPasswordAttl(LOGIN, PASSWORD);
+        loginPage.openLoginPage()
+                .waitUntilPageIsLoaded()
+                .enterLoginPasswordAttl(LOGIN, PASSWORD);
         boardsPage.waitUntillOpenBoardsButtonIsClickable();
         qa8haifaBoard.openCurrentBoardPage();
     }

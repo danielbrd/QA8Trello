@@ -13,8 +13,12 @@ public class HomePageHelper extends PageBase{
         super(driver);
     }
 
-    public void waitUntilPageIsLoaded() {
-        waitUntilElementIsClickable(loginIcon, 40);
+//    public void waitUntilPageIsLoaded() {
+//        waitUntilElementIsClickable(loginIcon, 40);
+//    }
+    public HomePageHelper waitUntilPageIsLoaded() {
+    waitUntilElementIsClickable(loginIcon, 40);
+    return this;
     }
 //----- Метод получения титульного логотипа с гл. стр.-----
     public String getPageTitle(){
